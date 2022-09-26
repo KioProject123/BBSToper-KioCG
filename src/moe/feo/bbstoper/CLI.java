@@ -148,9 +148,16 @@ public class CLI implements TabExecutor {
 						Poster poster = sql.getPoster(uuid);
 						boolean isrecording = true;
 						if (poster != null) {
-							sender.sendMessage(Message.PREFIX.getString() + Message.ALREADYBIND.getString());
-							IDListener.unregister(sender);
-							return;
+							long cd = System.currentTimeMillis() - poster.getBinddate();// 已经过了的cd
+							long settedcd = Option.MCBBS_CHANGEIDCOOLDOWN.getInt() * (long) 86400000;// 设置的cd
+							if (cd < settedcd) {// 如果还在cd那么直接return;
+								long leftcd = settedcd - cd;// 剩下的cd
+								long leftcdtodays = leftcd / 86400000;
+								sender.sendMessage(Message.PREFIX.getString() + Message.ONCOOLDOWN.getString()
+																								  .replaceAll("%COOLDOWN%", String.valueOf(leftcdtodays)));
+								IDListener.unregister(sender);
+								return;
+							}
 						} else {
 							poster = new Poster();
 							isrecording = false;

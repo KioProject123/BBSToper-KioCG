@@ -79,6 +79,7 @@ public class GUI {
 		} else {
 			skulllores.add(Message.GUI_BBSID.getString().replace("%BBSID%", poster.getBbsname()));
 			skulllores.add(Message.GUI_POSTTIMES.getString().replace("%TIMES%", "" + poster.getTopStates().size()));
+			skulllores.add(Message.GUI_CLICKREBOUND.getString());
 		}
 		skullmeta.setLore(skulllores);
 		skull.setItemMeta(skullmeta);
