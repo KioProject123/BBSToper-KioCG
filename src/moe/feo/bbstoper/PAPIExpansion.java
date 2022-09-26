@@ -105,9 +105,9 @@ public class PAPIExpansion extends PlaceholderExpansion {
 			int index = rank - 1;
 			List<Poster> listposter = sql.getTopPosters();
 			if (index < listposter.size()) {
-				return Message.POSTERPLAYER.getString() + ":" + listposter.get(index).getName() + " "
-						+ Message.POSTERID.getString() + ":" + listposter.get(index).getBbsname() + " "
-						+ Message.POSTERNUM.getString() + ":" + listposter.get(index).getCount();
+				return Message.POSTERPLAYER.getString() + listposter.get(index).getName() + " "
+						+ Message.POSTERID.getString() + listposter.get(index).getBbsname().replace("\u202E", "") + " "
+						+ Message.POSTERNUM.getString() + listposter.get(index).getCount();
 			}
 		}
 		return null;

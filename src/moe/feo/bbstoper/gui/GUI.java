@@ -107,9 +107,9 @@ public class GUI {
 		for (int i = 0; i < listposter.size(); i++) {
 			if (i >= Option.GUI_TOPPLAYERS.getInt())
 				break;
-			starlores.add(Message.POSTERPLAYER.getString() + ":" + listposter.get(i).getName() + " "
-					+ Message.POSTERID.getString() + ":" + listposter.get(i).getBbsname() + " "
-					+ Message.POSTERNUM.getString() + ":" + listposter.get(i).getCount());
+			starlores.add(Message.POSTERPLAYER.getString() + listposter.get(i).getName() + " "
+					+ Message.POSTERID.getString() + listposter.get(i).getBbsname().replace("\u202E", "") + " "
+					+ Message.POSTERNUM.getString() + listposter.get(i).getCount());
 		}
 		starmeta.setLore(starlores);
 		star.setItemMeta(starmeta);

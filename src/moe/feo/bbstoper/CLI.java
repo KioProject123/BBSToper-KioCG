@@ -278,13 +278,13 @@ public class CLI implements TabExecutor {
 						return;
 					}
 					List<String> msglist = new ArrayList<String>();
-					msglist.add(Message.PREFIX.getString() + Message.POSTERNUM.getString() + ":" + crawler.ID.size());
+					msglist.add(Message.PREFIX.getString() + Message.POSTERNUM.getString() + crawler.ID.size());
 					for (int i = (page - 1) * Option.MCBBS_PAGESIZE.getInt(); i < page
 							* Option.MCBBS_PAGESIZE.getInt(); i++) {
 						if (i >= crawler.ID.size())
 							break;// 当i不再小于顶贴人数，该停了
-						msglist.add(Message.POSTERID.getString() + ":" + crawler.ID.get(i) + " "
-								+ Message.POSTERTIME.getString() + ":" + crawler.Time.get(i));
+						msglist.add(Message.POSTERID.getString() + crawler.ID.get(i).replace("\u202E", "") + " "
+								+ Message.POSTERTIME.getString() + crawler.Time.get(i));
 					}
 					if (msglist.size() == 1)
 						msglist.add(Message.NOPOSTER.getString());
@@ -340,15 +340,15 @@ public class CLI implements TabExecutor {
 						return;
 					}
 					List<String> msglist = new ArrayList<String>();
-					msglist.add(Message.PREFIX.getString() + Message.POSTERTOTAL.getString() + ":" + posterlist.size());
+					msglist.add(Message.PREFIX.getString() + Message.POSTERTOTAL.getString() + posterlist.size());
 					for (int i = (page - 1) * Option.MCBBS_PAGESIZE.getInt(); i < page
 							* Option.MCBBS_PAGESIZE.getInt(); i++) {
 						if (i >= posterlist.size())
 							break;// 当i不再小于顶贴人数，该停了
 						Poster poster = posterlist.get(i);
-						msglist.add(Message.POSTERPLAYER.getString() + ":" + poster.getName() + " "
-								+ Message.POSTERID.getString() + ":" + poster.getBbsname() + " "
-								+ Message.POSTERNUM.getString() + ":" + poster.getCount());
+						msglist.add(Message.POSTERPLAYER.getString() + poster.getName() + " "
+								+ Message.POSTERID.getString() + poster.getBbsname().replace("\u202E", "") + " "
+								+ Message.POSTERNUM.getString() + poster.getCount());
 					}
 					if (msglist.size() == 1)
 						msglist.add(Message.NOPLAYER.getString());
