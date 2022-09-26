@@ -7,7 +7,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.SkullType;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -26,7 +25,17 @@ public class GUI {
 
 	private static SQLer sql;
 	private Inventory inv;
-	
+
+	// 添加返回主菜单按钮
+	private static final ItemStack menuIcon = new ItemStack(Material.WRITABLE_BOOK);
+	// 添加空间分割线物品
+	private static final ItemStack fillIcon = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
+
+	static {
+		menuIcon.editMeta(itemMeta -> itemMeta.setDisplayName("§e↩ §c返回主菜单"));
+		fillIcon.editMeta(itemMeta -> itemMeta.setDisplayName(Message.GUI_FRAME.getString()));
+	}
+
 	public static String getTitle() {// 获取插件的gui标题必须用此方法，因为用户可能会修改gui标题
 		String title = Message.GUI_TITLE.getString().replace("%PREFIX%", Message.PREFIX.getString());
 		return title;
@@ -37,7 +46,7 @@ public class GUI {
 		Bukkit.getScheduler().runTask(BBSToper.getInstance(), () -> player.openInventory(inv));
 	}
 	
-	class BBSToperGUIHolder implements InventoryHolder {// 定义一个Holder用于识别此插件的GUI
+	public class BBSToperGUIHolder implements InventoryHolder {// 定义一个Holder用于识别此插件的GUI
 		@Override
 		public Inventory getInventory() {
 			return getGui();
@@ -47,12 +56,11 @@ public class GUI {
 	@SuppressWarnings("deprecation")
 	public void createGui(Player player) {
 		InventoryHolder holder = new BBSToperGUIHolder();
-		this.setGui(Bukkit.createInventory(holder, InventoryType.CHEST, getTitle()));
-		for (int i = 0; i < inv.getSize(); i++) {// 设置边框
-			if (i > 9 && i < 17)
-				continue;
-			inv.setItem(i, new ItemStack(Material.GRAY_STAINED_GLASS_PANE));
-		}
+		this.setGui(Bukkit.createInventory(holder, 6 * 9, getTitle()));
+
+		// 添加返回主菜单按钮
+		inv.setItem(inv.getSize() - 5, menuIcon);
+
 		ItemStack skull = new ItemStack(Material.PLAYER_HEAD, 1, (short) SkullType.PLAYER.ordinal());
 		SkullMeta skullmeta = (SkullMeta) skull.getItemMeta();// 玩家头颅
 		if (Option.GUI_DISPLAYHEADSKIN.getBoolean()) {// 如果开启了头颅显示，才会设置头颅的所有者
@@ -75,7 +83,7 @@ public class GUI {
 		}
 		skullmeta.setLore(skulllores);
 		skull.setItemMeta(skullmeta);
-		inv.setItem(12, skull);
+		inv.setItem(20, skull);
 		ItemStack sunflower = new ItemStack(Material.SUNFLOWER);
 		ItemMeta sunflowermeta = sunflower.getItemMeta();
 		sunflowermeta.setDisplayName(Message.GUI_REWARDS.getString());
@@ -94,7 +102,7 @@ public class GUI {
 		sunflowerlores.add(Message.GUI_CLICKGET.getString());
 		sunflowermeta.setLore(sunflowerlores);
 		sunflower.setItemMeta(sunflowermeta);
-		inv.setItem(13, sunflower);
+		inv.setItem(23, sunflower);
 		ItemStack star = new ItemStack(Material.NETHER_STAR);
 		ItemMeta starmeta = star.getItemMeta();
 		starmeta.setDisplayName(Message.GUI_TOPS.getString());
@@ -109,7 +117,7 @@ public class GUI {
 		}
 		starmeta.setLore(starlores);
 		star.setItemMeta(starmeta);
-		inv.setItem(14, star);
+		inv.setItem(24, star);
 		ItemStack compass = new ItemStack(Material.COMPASS);
 		ItemMeta compassmeta = compass.getItemMeta();
 		compassmeta.setDisplayName(Message.GUI_PAGESTATE.getString());
@@ -133,7 +141,14 @@ public class GUI {
 		compasslores.add(Message.GUI_CLICKOPEN.getString());
 		compassmeta.setLore(compasslores);
 		compass.setItemMeta(compassmeta);
-		inv.setItem(22, compass);
+		inv.setItem(21, compass);
+
+		int[] slots = {0,1,2,3,4,5,6,7,8,9,17,18,26,27,35,36,44,45,46,47,48,49,50,51,52,53};
+		for (int i: slots) {// 设置边框
+			if (inv.getItem(i) == null) {
+				inv.setItem(i, fillIcon);
+			}
+		}
 	}
 	
 	public Inventory getGui() {

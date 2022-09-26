@@ -1,5 +1,6 @@
 package moe.feo.bbstoper.gui;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -7,7 +8,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.plugin.Plugin;
 
-import moe.feo.bbstoper.CLI;
 import moe.feo.bbstoper.Message;
 import moe.feo.bbstoper.Option;
 
@@ -28,7 +28,7 @@ public class GUIManager implements Listener {
 		InventoryHolder holder = player.getOpenInventory().getTopInventory().getHolder();
 		if(holder instanceof GUI.BBSToperGUIHolder) {// 确认操作的是此插件的GUI
 			event.setCancelled(true);
-			if (event.getRawSlot() == 12) {// 点击绑定
+			if (event.getRawSlot() == 20) {// 点击绑定
 				if (Option.GUI_USECHATGETID.getBoolean() == true) {
 					player.closeInventory();
 					UUID uid = player.getUniqueId();
@@ -46,18 +46,18 @@ public class GUIManager implements Listener {
 					player.closeInventory();
 					player.sendMessage(Message.PREFIX.getString() + Message.HELP_BINDING.getString());
 				}
+				return;
 			}
-			if (event.getRawSlot() == 13) {
-				player.closeInventory();
-				String[] args = { "reward" };
-				CLI.getInstance().onCommand(player, null, null, args);
-			}
-			if (event.getRawSlot() == 22) {// 获取链接
+			if (event.getRawSlot() == 21) {// 获取链接
 				player.closeInventory();
 				for (String msg : Message.CLICKPOSTICON.getStringList()) {
 					String url = "https://www.mcbbs.net/thread-" + Option.MCBBS_URL.getString() + "-1-1.html";
 					player.sendMessage(msg.replace("%PAGE%", url));
 				}
+				return;
+			}
+			if (event.getRawSlot() == player.getOpenInventory().getTopInventory().getSize() - 5) {
+				Bukkit.dispatchCommand(player, "menu");
 			}
 		}
 	}

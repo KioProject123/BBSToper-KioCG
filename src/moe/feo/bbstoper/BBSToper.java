@@ -1,5 +1,6 @@
 package moe.feo.bbstoper;
 
+import moe.feo.bbstoper.gui.GUI;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -34,6 +35,12 @@ public class BBSToper extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
+		Bukkit.getOnlinePlayers().forEach(player -> {
+			if (player.getOpenInventory().getTopInventory().getHolder() instanceof GUI.BBSToperGUIHolder) {
+				player.closeInventory();
+			}
+		});
+
 		Bukkit.getScheduler().cancelTasks(bbstoper);
 		Thread thread = new Thread(new Runnable(){
 			@Override
