@@ -147,13 +147,11 @@ public class Reward {
 		if (canOffDayReward(thispost)) {
 			offday = true;
 		}
-		String extra = null;
 		if (incentive) {// 如果激励奖励条件达成
 			// 如果休息日奖励也达成了, 并且激励奖励和休息日奖励都不是额外奖励, 不会发放激励奖励(只会发放休息日奖励)
 			if (!(offday && Option.REWARD_INCENTIVEREWARD_EXTRA.getBoolean() == false
 					&& Option.REWARD_OFFDAYREWARD_EXTRA.getBoolean() == false)) {
 				cmds.addAll(Option.REWARD_INCENTIVEREWARD_COMMANDS.getStringList());
-				extra = new String(Message.GUI_INCENTIVEREWARDS.getString());
 			}
 			if (Option.REWARD_INCENTIVEREWARD_EXTRA.getBoolean() == false) {
 				// 如果这不是额外奖励, 则普通奖励不会发放
@@ -162,11 +160,6 @@ public class Reward {
 		}
 		if (offday) {// 如果休息日奖励条件达成
 			cmds.addAll(Option.REWARD_OFFDAYREWARD_COMMANDS.getStringList());
-			if (extra == null) {
-				extra = new String(Message.GUI_OFFDAYREWARDS.getString());
-			} else {
-				extra = extra + "+" + Message.GUI_OFFDAYREWARDS.getString();
-			}
 			if (Option.REWARD_OFFDAYREWARD_EXTRA.getBoolean() == false) {
 				// 如果这不是额外奖励, 则普通奖励不会发放
 				normal = false;
@@ -188,10 +181,6 @@ public class Reward {
 		// 给玩家发个消息表示祝贺
 		player.sendMessage(
 				Message.PREFIX.getString() + Message.REWARD.getString().replaceAll("%TIME%", crawler.Time.get(index)));
-		if (extra != null) {
-			player.sendMessage(
-					Message.PREFIX.getString() + Message.EXTRAREWARD.getString().replaceAll("%EXTRA%", extra));
-		}
 	}
 
 	public void testAward(String type) {

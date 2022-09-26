@@ -79,7 +79,6 @@ public class GUI {
 		} else {
 			skulllores.add(Message.GUI_BBSID.getString().replace("%BBSID%", poster.getBbsname()));
 			skulllores.add(Message.GUI_POSTTIMES.getString().replace("%TIMES%", "" + poster.getTopStates().size()));
-			skulllores.add(Message.GUI_CLICKREBOUND.getString());
 		}
 		skullmeta.setLore(skulllores);
 		skull.setItemMeta(skullmeta);
@@ -91,15 +90,12 @@ public class GUI {
 		if (sunflowerlores.isEmpty()) {// 如果没有自定义奖励信息
 			sunflowerlores.addAll(Option.REWARD_COMMANDS.getStringList());// 直接显示命令
 			if (Option.REWARD_INCENTIVEREWARD_ENABLE.getBoolean()) {
-				sunflowerlores.add(Message.GUI_INCENTIVEREWARDS.getString());// 激励奖励
 				sunflowerlores.addAll(Option.REWARD_INCENTIVEREWARD_COMMANDS.getStringList());// 激励奖励命令
 			}
 			if (Option.REWARD_OFFDAYREWARD_ENABLE.getBoolean()) {
-				sunflowerlores.add(Message.GUI_OFFDAYREWARDS.getString());// 休息日奖励
 				sunflowerlores.addAll(Option.REWARD_OFFDAYREWARD_COMMANDS.getStringList()); // 休息日奖励命令
 			}
 		}
-		sunflowerlores.add(Message.GUI_CLICKGET.getString());
 		sunflowermeta.setLore(sunflowerlores);
 		sunflower.setItemMeta(sunflowermeta);
 		inv.setItem(23, sunflower);
@@ -132,11 +128,6 @@ public class GUI {
 			}
 		} else {
 			compasslores.add(Message.GUI_PAGENOTVISIBLE.getString());
-		}
-		String extra = Util.getExtraReward(crawler);
-		if (extra != null) {
-			String extrarewards = Message.GUI_EXTRAREWARDS.getString().replace("%EXTRA%", extra);
-			compasslores.add(extrarewards);
 		}
 		compasslores.add(Message.GUI_CLICKOPEN.getString());
 		compassmeta.setLore(compasslores);
