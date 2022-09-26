@@ -108,6 +108,9 @@ public class CLI implements TabExecutor {
 				switch (args[0].toLowerCase()) {
 				case "help": {
 					sender.sendMessage(Message.PREFIX.getString() + Message.HELP_TITLE.getString());
+					if (sender.hasPermission("bbstoper.reward")) {
+						sender.sendMessage(Message.PREFIX.getString() + Message.HELP_REWARD.getString());
+					}
 					if (sender.hasPermission("bbstoper.testreward")) {
 						sender.sendMessage(Message.PREFIX.getString() + Message.HELP_TESTREWARD.getString());
 					}
@@ -154,7 +157,7 @@ public class CLI implements TabExecutor {
 								long leftcd = settedcd - cd;// 剩下的cd
 								long leftcdtodays = leftcd / 86400000;
 								sender.sendMessage(Message.PREFIX.getString() + Message.ONCOOLDOWN.getString()
-																								  .replaceAll("%COOLDOWN%", String.valueOf(leftcdtodays)));
+										.replaceAll("%COOLDOWN%", String.valueOf(leftcdtodays)));
 								IDListener.unregister(sender);
 								return;
 							}
@@ -201,6 +204,94 @@ public class CLI implements TabExecutor {
 						IDListener.unregister(sender);
 						return;
 					}
+				}
+				case "reward": {
+					if (!(sender instanceof Player)) {
+						sender.sendMessage(Message.PLAYERCMD.getString());
+						sender.sendMessage(Message.HELP_HELP.getString());
+						return;
+					}
+					if (!sender.hasPermission("bbstoper.reward")) {
+						sender.sendMessage(Message.PREFIX.getString() + Message.NOPERMISSION.getString());
+						return;
+					}
+					Player player = Bukkit.getPlayer(sender.getName());
+					String uuid = player.getUniqueId().toString();
+					Poster poster = sql.getPoster(uuid);
+					if (poster == null) {// 没有绑定
+						sender.sendMessage(Message.PREFIX.getString() + Message.NOTBOUND.getString());
+						sender.sendMessage(Message.PREFIX.getString() + Message.HELP_BINDING.getString());
+						return;
+					}
+					if (!sender.hasPermission("bbstoper.bypassquerycooldown")) {
+						double cooldown = getQueryCooldown(((Player) sender).getUniqueId());
+						if (cooldown > 0) {
+							sender.sendMessage(Message.PREFIX.getString() + Message.QUERYCOOLDOWN.getString()
+									.replaceAll("%COOLDOWN%", String.valueOf((int) cooldown)));
+							return;
+						} else {
+							queryrecord.put(((Player) sender).getUniqueId(), System.currentTimeMillis());
+						}
+					}
+					crawler = new Crawler();
+					if (!crawler.visible) {
+						sender.sendMessage(Message.PREFIX.getString() + Message.PAGENOTVISIBLE.getString());
+						return;
+					}
+					String bbsname = poster.getBbsname();
+					List<String> cache = new ArrayList<>();// 这个缓存是用来判断玩家的顶贴粒度是否小于一分钟
+					boolean issucceed = false;
+					boolean isovertime = false;
+					boolean iswaitamin = false;
+					boolean havepost = false;
+					for (int i = 0; i < crawler.ID.size(); i++) {// 对ID进行遍历
+						if (crawler.ID.get(i).equalsIgnoreCase(bbsname)) {// 如果ID等于poster的论坛名字
+							List<String> topstates = poster.getTopStates();
+							for (String cachedtime : cache) {// 判断玩家的顶贴粒度是否小于一分钟了
+								if (cachedtime.equals(crawler.Time.get(i))) {// 缓存里面有这次时间
+									for (String topstate : topstates) {// 然后再去遍历数据库里面存的时间
+										if (topstate.equals(crawler.Time.get(i))) {// 如果数据库里面的时间也等于这次的时间
+											// 那就说明玩家肯定有两次同样时间的顶贴，说明玩家顶贴间隔小于一分钟
+											iswaitamin = true;// 我们这里只会提醒玩家一次
+										}
+									}
+								}
+							}
+							if (!topstates.contains(crawler.Time.get(i))) {// 如果数据库里没有这次顶贴的记录
+								havepost = true;
+								String datenow = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+								if (!datenow.equals(poster.getRewardbefore())) {// 如果上一次顶贴不是今天，置零
+									poster.setRewardbefore(datenow);
+									poster.setRewardtime(0);
+								}
+								if (poster.getRewardtime() < Option.REWARD_TIMES.getInt()) {// 奖励次数小于设定值
+									new Reward((Player) sender, crawler, i).award();
+									sql.addTopState(poster.getBbsname(), crawler.Time.get(i));
+									poster.setRewardtime(poster.getRewardtime() + 1);// rewardtime次数加一
+									issucceed = true;
+								} else {
+									isovertime = true;
+								}
+							}
+						}
+					}
+					sql.updatePoster(poster);// 更新poster
+					if (issucceed) {
+						sender.sendMessage(Message.PREFIX.getString() + Message.REWARDGIVED.getString());
+					}
+					if (isovertime) {
+						int rewardtimes = Option.REWARD_TIMES.getInt();
+						sender.sendMessage(Message.PREFIX.getString() + Message.OVERTIME.getString()
+								.replaceAll("%REWARDTIMES%", Integer.toString(rewardtimes)));
+					}
+					if (iswaitamin) {
+						sender.sendMessage(Message.PREFIX.getString() + Message.WAITAMIN.getString());
+					}
+					if (!havepost) {
+						sender.sendMessage(Message.PREFIX.getString() + Message.NOPOST.getString());
+					}
+
+					break;
 				}
 
 				case "testreward": {
