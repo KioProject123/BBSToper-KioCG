@@ -38,7 +38,7 @@ public class GUIManager implements Listener {
 						if (rglistener == null) {
 							new IDListener(player.getUniqueId()).register();// 为此玩家创建一个监听器
 							String keywords = Arrays.toString(Option.GUI_CANCELKEYWORDS.getStringList().toArray());
-							player.sendMessage(Message.PREFIX.getString() + Message.ENTER.getString().replaceAll("%KEYWORD%", keywords));
+							player.sendMessage(Message.PREFIX.getString() + Message.ENTER.getString().replace("%KEYWORD%", keywords));
 						}
 					}
 				}
@@ -56,7 +56,7 @@ public class GUIManager implements Listener {
 				player.closeInventory();
 				for (String msg : Message.CLICKPOSTICON.getStringList()) {
 					String url = "https://www.mcbbs.net/thread-" + Option.MCBBS_URL.getString() + "-1-1.html";
-					player.sendMessage(msg.replaceAll("%PAGE%", url));
+					player.sendMessage(msg.replace("%PAGE%", url));
 				}
 			}
 		}

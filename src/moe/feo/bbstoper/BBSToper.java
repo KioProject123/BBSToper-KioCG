@@ -1,6 +1,5 @@
 package moe.feo.bbstoper;
 
-import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -31,8 +30,6 @@ public class BBSToper extends JavaPlugin {
 		if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
 			new PAPIExpansion().register();
 		}
-		new Metrics(this);
-		this.getLogger().info(Message.ENABLE.getString());
 	}
 
 	@Override

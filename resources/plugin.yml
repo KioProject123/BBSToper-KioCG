@@ -1,9 +1,10 @@
-name: BBSToper
+name: BBSToper-KioCG
 main: moe.feo.bbstoper.BBSToper
 version: 3.6.7
 author: Fengshuai(R_Josef)
 website: https://www.mcbbs.net/thread-789082-1-1.html
 softdepend: [PlaceholderAPI]
+api-version: 1.18
 commands:
     bbstoper:
         description: 'BBSToper的主要指令.'
@@ -65,4 +66,3 @@ permissions:
     bbstoper.reload: 
         description: '重载插件.'
         default: 'op'
-    

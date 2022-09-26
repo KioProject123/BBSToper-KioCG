@@ -8,7 +8,6 @@
 prefix: '&e[&dBBSToper&e] '
 
 #载入
-enable: '插件已启用!'
 reload: '&a配置已重载!'
 
 #数据库
@@ -40,14 +39,13 @@ intervaltooshort: '&4您在 &f%TIME% &4的顶贴过于频繁, 您必须在距离
 reward: '&b您在 &f%TIME% &b进行的顶帖已得到回报.'
 extrareward: '&b您还获得了: %EXTRA%.'
 rewardgived: '&a奖励发放完毕!'
-broadcast: '&b玩家 &e%PLAYER% &b刚刚领取了顶贴奖励, 大家也快来顶贴吧! '
 
 #绑定
 enter: '&c请在聊天框输入您的论坛ID, 或输入下列关键词取消绑定: %KEYWORD%.'
 canceled: '&c绑定已取消.'
 repeat: '&c为防止输错ID, 请重复输入一次!'
 notsame: '&4抱歉, 两次输入不一致，请重新输入!'
-oncooldown: '&4抱歉您的账号正在绑定冷却中: &f%COOLDOWN% 天.'
+alreadybind: '&4你已经绑定了一个论坛ID!'
 samebind: '&4已有相同的绑定,如果这是您的ID,请联系管理!'
 ownsamebind: '&4您已经绑定过相同ID!'
 bindingsuccess: '&a绑定成功!'
@@ -123,7 +121,6 @@ help:
     title: '&3&lBBSToper指令帮助'
     help: '&3显示帮助信息: &b/bt help'
     binding: '&3绑定论坛账号: &b/bt binding <MCBBS论坛ID>'
-    reward: '&3获取奖励: &b/bt reward'
     testreward: '&3测试奖励: &b/bt testreward [ normal | incentive | offday ]'
     list: "&3查看顶帖列表: &b/bt list [页码]"
     top: "&3查看所有顶贴玩家排名: &b/bt top [页码]"
