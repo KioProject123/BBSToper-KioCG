@@ -124,6 +124,15 @@ public class Reward {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
+
+		// KioCG start - 排除凌晨
+		if (thispost.get(Calendar.HOUR_OF_DAY) <= 8) {
+			player.sendMessage(Message.PREFIX.getString() + Message.INTERVALTOOSHORT.getString()
+			.replaceAll("%TIME%", crawler.Time.get(index)).replaceAll("%INTERVAL%", Option.REWARD_INTERVAL.getString()));
+			return;
+		}
+		// KioCG end - 排除凌晨
+
 		// 如果顶贴间隔短于设定值则不进行操作
 		if (Option.REWARD_INTERVAL.getInt() > 0 && isIntervalTooShort(thispost, index)) {
 			player.sendMessage(Message.PREFIX.getString() + Message.INTERVALTOOSHORT.getString()
