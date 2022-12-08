@@ -126,7 +126,7 @@ public class Reward {
 		}
 
 		// KioCG start - 排除凌晨
-		if (thispost.get(Calendar.HOUR_OF_DAY) <= 8) {
+		if (thispost.get(Calendar.HOUR_OF_DAY) < 8) {
 			player.sendMessage(Message.PREFIX.getString() + Message.INTERVALTOOSHORT.getString()
 			.replaceAll("%TIME%", crawler.Time.get(index)).replaceAll("%INTERVAL%", Option.REWARD_INTERVAL.getString()));
 			return;
