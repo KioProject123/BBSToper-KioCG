@@ -125,13 +125,13 @@ public class Reward {
 			e.printStackTrace();
 		}
 
-		// KioCG start - 排除凌晨
-		if (thispost.get(Calendar.HOUR_OF_DAY) < 8) {
+		// KioCG start - 排除10点前
+		if (thispost.get(Calendar.HOUR_OF_DAY) < 10) {
 			player.sendMessage(Message.PREFIX.getString() + Message.INTERVALTOOSHORT.getString()
 			.replaceAll("%TIME%", crawler.Time.get(index)).replaceAll("%INTERVAL%", Option.REWARD_INTERVAL.getString()));
 			return;
 		}
-		// KioCG end - 排除凌晨
+		// KioCG end - 排除10点前
 
 		// 如果顶贴间隔短于设定值则不进行操作
 		if (Option.REWARD_INTERVAL.getInt() > 0 && isIntervalTooShort(thispost, index)) {
