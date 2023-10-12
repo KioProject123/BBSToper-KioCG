@@ -8,7 +8,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.plugin.Plugin;
 
-import moe.feo.bbstoper.CLI;
 import moe.feo.bbstoper.Message;
 import moe.feo.bbstoper.Option;
 
@@ -52,7 +51,7 @@ public class GUIManager implements Listener {
 			if (event.getRawSlot() == 21) {// 获取链接
 				player.closeInventory();
 				for (String msg : Message.CLICKPOSTICON.getStringList()) {
-                    String url = Option.MCBBS_LINK.getString() + "thread-" + Option.MCBBS_URL.getString() + "-1-1.html";
+					String url = Option.MCBBS_LINK.getString() + "thread-" + Option.MCBBS_URL.getString() + "-1-1.html";
 					player.sendMessage(msg.replace("%PAGE%", url));
 				}
 				return;
